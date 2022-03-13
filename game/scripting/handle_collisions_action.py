@@ -39,14 +39,21 @@ class HandleCollisionsAction(Action):
         score = cast.get_first_actor("scores")
         food = cast.get_first_actor("foods")
         snake = cast.get_first_actor("snakes")
+        snake2 = cast.get_first_actor("snake2")
         head = snake.get_head()
+        head2 = snake2.get_head()
 
         if head.get_position() == food.get_position():
             points = food.get_points()
             snake.grow_tail(points)
             score.add_points(points)
             food.reset()
-    
+        if head2.get_position() == food.get_position():
+            points = food.get_points()
+            snake2.grow_tail(points)
+            score.add_points(points)
+            food.reset()       
+
     def _handle_segment_collision(self, cast):
         """Sets the game over flag if the snake collides with one of its segments.
         
@@ -54,10 +61,16 @@ class HandleCollisionsAction(Action):
             cast (Cast): The cast of Actors in the game.
         """
         snake = cast.get_first_actor("snakes")
-        head = snake.get_segments()[0]
+        snake2 = cast.get_first_actor("snake2")
+        head = snake.get_head()
+        head2 = snake2.get_head()
         segments = snake.get_segments()[1:]
+        segment2 = snake2.get_segments()[1:]
         
         for segment in segments:
+            if head2.get_position().equals(segment.get_position()):
+                self._is_game_over = True
+        for segment in segment2:
             if head.get_position().equals(segment.get_position()):
                 self._is_game_over = True
         
@@ -71,6 +84,8 @@ class HandleCollisionsAction(Action):
             snake = cast.get_first_actor("snakes")
             segments = snake.get_segments()
             food = cast.get_first_actor("foods")
+            snake2 = cast.get_first_actor("snake2")
+            segment2 = snake2.get_segments()[1:]
 
             x = int(constants.MAX_X / 2)
             y = int(constants.MAX_Y / 2)
@@ -82,5 +97,9 @@ class HandleCollisionsAction(Action):
             cast.add_actor("messages", message)
 
             for segment in segments:
+                segment.set_color(constants.WHITE)
+            food.set_color(constants.WHITE)
+
+            for segment in segment2:
                 segment.set_color(constants.WHITE)
             food.set_color(constants.WHITE)

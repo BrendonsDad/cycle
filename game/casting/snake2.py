@@ -3,7 +3,7 @@ from game.casting.actor import Actor
 from game.shared.point import Point
 
 
-class Snake(Actor):
+class Snake2(Actor):
     """
     A long limbless reptile.
     
@@ -45,21 +45,21 @@ class Snake(Actor):
             segment.set_position(position)
             segment.set_velocity(velocity)
             segment.set_text("#")
-            segment.set_color(constants.GREEN)
+            segment.set_color(constants.RED)
             self._segments.append(segment)
 
     def turn_head(self, velocity):
         self._segments[0].set_velocity(velocity)
     
     def _prepare_body(self):
-        x = int(constants.MAX_X / 2 -3000)
+        x = int(constants.MAX_X / 2 +3000)
         y = int(constants.MAX_Y / 2)
 
         for i in range(constants.SNAKE_LENGTH):
             position = Point(x, y + i * constants.CELL_SIZE)
             velocity = Point(0, -1 * constants.CELL_SIZE)
             text = "8" if i == 0 else "#"
-            color = constants.YELLOW if i == 0 else constants.GREEN
+            color = constants.RED if i == 0 else constants.GREEN
             
             segment = Actor()
             segment.set_position(position)
